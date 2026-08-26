@@ -1,0 +1,6 @@
+{
+  "name": "Terrarium",
+  "description": "Find your perfect plant. Modern urban gardening e-commerce with Plant Match Quiz, care guides, order tracking, and plant care reminders.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Terracotta Pot Base -->
+    <path
+        android:fillColor="#E07A5F"
+        android:pathData="M38,72 L70,72 L66,84 L42,84 Z" />
+    <path
+        android:fillColor="#CC6A50"
+        android:pathData="M36,69 L72,69 L70,73 L38,73 Z" />
+
+    <!-- Terrarium Glass Bell Dome outline -->
+    <path
+        android:fillColor="#22FFFFFF"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:pathData="M54,26 C41,26 33,36 33,52 L33,69 L75,69 L75,52 C75,36 67,26 54,26 Z" />
+    
+    <!-- Top knob on dome -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,21 A3,3 0 1 0 54,27 A3,3 0 1 0 54,21" />
+
+    <!-- Lush Sprout & Plant Inside -->
+    <!-- Left Leaf -->
+    <path
+        android:fillColor="#81C784"
+        android:pathData="M54,64 C50,56 42,52 38,54 C38,62 48,64 54,64 Z" />
+    <!-- Right Leaf -->
+    <path
+        android:fillColor="#A5D6A7"
+        android:pathData="M54,60 C58,50 68,48 71,51 C71,59 60,62 54,64 Z" />
+    <!-- Center Sprout Stem & Leaf -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M54,68 C52,50 54,42 54,36 C55,42 57,50 54,68 Z" />
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M54,42 C51,36 53,30 57,32 C59,36 56,40 54,42 Z" />
+</vector>
