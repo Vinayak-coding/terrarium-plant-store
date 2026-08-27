@@ -53,12 +53,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.Order
 import com.example.data.model.OrderStatus
+import com.example.data.model.formatRupees
 import com.example.ui.components.EmptyStateView
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
 import com.example.ui.theme.ForestGreenDark
 import com.example.ui.theme.ForestGreenPrimary
 import com.example.ui.theme.MintLight
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
 import com.example.ui.theme.SoftSageContainer
 import com.example.ui.theme.SuccessGreen
+import com.example.ui.theme.Terracotta
 import com.example.ui.theme.TerracottaAccent
 import com.example.ui.viewmodel.TerrariumViewModel
 
@@ -272,8 +278,8 @@ fun OrderTrackingScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    Text("Total Paid", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = ForestGreenDark)
-                                    Text("$${String.format("%.2f", order.totalAmount)}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = ForestGreenPrimary)
+                                    Text("Total Paid", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = DeepNeem)
+                                    Text(formatRupees(order.totalAmount), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = ParrotGreen)
                                 }
                             }
                         }
@@ -285,13 +291,14 @@ fun OrderTrackingScreen(
                             text = "All Recent Orders",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenDark
+                            color = DeepNeem
                         )
 
                         orders.forEach { orderItem ->
                             Card(
                                 shape = RoundedCornerShape(14.dp),
                                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                border = androidx.compose.foundation.BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable { selectedOrder = orderItem }
@@ -304,10 +311,10 @@ fun OrderTrackingScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column {
-                                        Text("#${orderItem.orderId}", fontWeight = FontWeight.Bold, color = ForestGreenDark)
+                                        Text("#${orderItem.orderId}", fontWeight = FontWeight.Bold, color = DeepNeem)
                                         Text(orderItem.itemsSummary, maxLines = 1, style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                                     }
-                                    Text("$${String.format("%.2f", orderItem.totalAmount)}", fontWeight = FontWeight.Bold, color = ForestGreenPrimary)
+                                    Text(formatRupees(orderItem.totalAmount), fontWeight = FontWeight.Bold, color = ParrotGreen)
                                 }
                             }
                         }

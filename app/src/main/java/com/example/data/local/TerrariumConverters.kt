@@ -78,7 +78,7 @@ class TerrariumConverters {
     fun toPaymentMethod(value: String): PaymentMethod = try {
         PaymentMethod.valueOf(value)
     } catch (e: Exception) {
-        PaymentMethod.ONLINE_CARD_UPI
+        PaymentMethod.UPI
     }
 
     @TypeConverter

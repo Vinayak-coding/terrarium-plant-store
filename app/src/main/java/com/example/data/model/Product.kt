@@ -10,6 +10,7 @@ enum class ProductCategory(val displayName: String) {
     HERBS("Herbs & Edibles"),
     LOW_LIGHT("Low-Light Plants"),
     AIR_PURIFYING("Air Purifying"),
+    SEEDS_BULBS("Seeds & Bulbs"),
     POTS_PLANTERS("Pots & Planters"),
     SOIL_FERTILIZER("Soil & Fertilizers"),
     TOOLS_ACCESSORIES("Tools & Care Kits")

@@ -79,15 +79,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.Product
 import com.example.data.model.Review
+import com.example.data.model.formatRupees
 import com.example.ui.components.BotanicalIllustration
 import com.example.ui.components.RatingStars
 import com.example.ui.components.StockBadge
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
 import com.example.ui.theme.ForestGreenDark
 import com.example.ui.theme.ForestGreenPrimary
 import com.example.ui.theme.MintLight
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
 import com.example.ui.theme.SageGreen
 import com.example.ui.theme.SoftSageContainer
 import com.example.ui.theme.SunAmber
+import com.example.ui.theme.Terracotta
 import com.example.ui.theme.TerracottaAccent
 import com.example.ui.theme.TerracottaDark
 import com.example.ui.theme.TerracottaLight
@@ -321,15 +327,15 @@ fun ProductDetailScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val displayPrice = product.discountPrice ?: product.price
                     Text(
-                        text = "$${String.format("%.2f", displayPrice)}",
+                        text = formatRupees(displayPrice),
                         style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Bold,
-                        color = ForestGreenPrimary
+                        color = ParrotGreen
                     )
                     if (product.discountPrice != null) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "$${String.format("%.2f", product.price)}",
+                            text = formatRupees(product.price),
                             style = MaterialTheme.typography.titleLarge.copy(textDecoration = TextDecoration.LineThrough),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -337,10 +343,10 @@ fun ProductDetailScreen(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(6.dp))
-                                .background(TerracottaAccent)
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                                .background(Terracotta)
+                                .padding(horizontal = 8.dp, vertical = 3.dp)
                         ) {
-                            Text("SAVE $$${String.format("%.2f", product.price - product.discountPrice!!)}", style = MaterialTheme.typography.labelSmall, color = Color.White, fontWeight = FontWeight.Bold)
+                            Text("SAVE ${formatRupees(product.price - product.discountPrice!!)}", style = MaterialTheme.typography.labelSmall, color = Color.White, fontWeight = FontWeight.Bold)
                         }
                     }
                 }

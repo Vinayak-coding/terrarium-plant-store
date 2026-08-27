@@ -75,14 +75,40 @@ class TerrariumViewModel(private val repository: TerrariumRepository) : ViewMode
         )
     }
 
+    fun updateUserProfile(
+        name: String,
+        email: String,
+        phone: String,
+        flatHouse: String,
+        street: String,
+        locality: String,
+        landmark: String,
+        city: String,
+        state: String,
+        pinCode: String
+    ) {
+        _currentUser.value = _currentUser.value.copy(
+            name = name,
+            email = email,
+            phone = phone,
+            flatHouse = flatHouse,
+            street = street,
+            locality = locality,
+            landmark = landmark,
+            city = city,
+            state = state,
+            pinCode = pinCode
+        )
+    }
+
     fun updateUserProfile(name: String, email: String, phone: String, address: String, city: String, postal: String) {
         _currentUser.value = _currentUser.value.copy(
             name = name,
             email = email,
             phone = phone,
-            defaultAddress = address,
+            street = address,
             city = city,
-            postalCode = postal
+            pinCode = postal
         )
     }
 

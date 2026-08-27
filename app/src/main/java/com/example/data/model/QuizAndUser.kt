@@ -1,5 +1,60 @@
 package com.example.data.model
 
+import java.text.NumberFormat
+import java.util.Locale
+
+val IndianStatesAndUTs = listOf(
+    "Andaman and Nicobar Islands",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Dadra and Nagar Haveli and Daman and Diu",
+    "Delhi (NCT)",
+    "Goa",
+    "Gujarat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu and Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Ladakh",
+    "Lakshadweep",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Odisha",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal"
+)
+
+fun formatRupees(amount: Double): String {
+    val rounded = amount.toLong()
+    val formatter = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
+    formatter.maximumFractionDigits = if (amount % 1.0 == 0.0) 0 else 2
+    val formatted = formatter.format(amount)
+    // Ensure clean ₹ symbol format
+    return if (formatted.startsWith("₹") || formatted.startsWith("Rs.")) {
+        if (formatted.startsWith("Rs.")) "₹" + formatted.removePrefix("Rs.").trim() else formatted
+    } else {
+        "₹$rounded"
+    }
+}
+
 data class QuizQuestion(
     val step: Int,
     val title: String,
@@ -32,12 +87,24 @@ data class QuizRecommendationResult(
 )
 
 data class UserAccount(
-    val name: String = "Vinayak Lavhate",
-    val email: String = "vinayak@example.com",
-    val phone: String = "+1 (555) 349-2810",
-    val defaultAddress: String = "742 Evergreen Botanical Way",
-    val city: String = "San Francisco",
-    val postalCode: String = "94107",
+    val name: String = "Aarav Sharma",
+    val email: String = "aarav.sharma@terrarium.in",
+    val phone: String = "+91 98765 43210",
+    val flatHouse: String = "Flat 402, Green Meadows",
+    val street: String = "Senapati Bapat Road",
+    val locality: String = "Shivajinagar",
+    val landmark: String = "Near ICC Trade Tower",
+    val city: String = "Pune",
+    val state: String = "Maharashtra",
+    val pinCode: String = "411016",
     val isGuest: Boolean = false,
     val isAdmin: Boolean = false
-)
+) {
+    val defaultAddress: String
+        get() = "$flatHouse, $street, $locality, $city, $state - $pinCode"
+    val address: String
+        get() = defaultAddress
+    val postalCode: String
+        get() = pinCode
+}
+

@@ -24,9 +24,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.CurrencyRupee
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Inventory
@@ -77,16 +77,22 @@ import com.example.data.model.PlantSize
 import com.example.data.model.Product
 import com.example.data.model.ProductCategory
 import com.example.data.model.SunlightRequirement
+import com.example.data.model.formatRupees
 import com.example.ui.components.BotanicalIllustration
 import com.example.ui.components.RatingStars
 import com.example.ui.components.StockBadge
 import com.example.ui.theme.AlertRed
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
 import com.example.ui.theme.ForestGreenDark
 import com.example.ui.theme.ForestGreenPrimary
 import com.example.ui.theme.MintLight
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
 import com.example.ui.theme.SoftSageContainer
 import com.example.ui.theme.SuccessGreen
 import com.example.ui.theme.SunAmber
+import com.example.ui.theme.Terracotta
 import com.example.ui.theme.TerracottaAccent
 import com.example.ui.viewmodel.TerrariumViewModel
 
@@ -213,16 +219,16 @@ fun AdminDashboardScreen(
                         ) {
                             AdminKpiCard(
                                 title = "Demo Revenue",
-                                value = "$${String.format("%.2f", totalRevenue)}",
-                                icon = Icons.Default.AttachMoney,
-                                color = ForestGreenPrimary,
+                                value = formatRupees(totalRevenue),
+                                icon = Icons.Default.CurrencyRupee,
+                                color = ParrotGreen,
                                 modifier = Modifier.weight(1f)
                             )
                             AdminKpiCard(
                                 title = "Total Orders",
                                 value = "${orders.size}",
                                 icon = Icons.Default.LocalShipping,
-                                color = TerracottaAccent,
+                                color = Terracotta,
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -235,7 +241,7 @@ fun AdminDashboardScreen(
                                 title = "Catalog Items",
                                 value = "${products.size}",
                                 icon = Icons.Default.Inventory,
-                                color = ForestGreenDark,
+                                color = DeepNeem,
                                 modifier = Modifier.weight(1f)
                             )
                             AdminKpiCard(
@@ -252,7 +258,7 @@ fun AdminDashboardScreen(
                             text = "Recent Store Orders",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenDark
+                            color = DeepNeem
                         )
 
                         if (orders.isEmpty()) {
@@ -262,6 +268,7 @@ fun AdminDashboardScreen(
                                 Card(
                                     shape = RoundedCornerShape(14.dp),
                                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Row(
@@ -273,9 +280,9 @@ fun AdminDashboardScreen(
                                     ) {
                                         Column {
                                             Text("#${order.orderId} • ${order.customerName}", fontWeight = FontWeight.Bold)
-                                            Text(order.status.displayName, style = MaterialTheme.typography.bodySmall, color = ForestGreenPrimary)
+                                            Text(order.status.displayName, style = MaterialTheme.typography.bodySmall, color = ParrotGreen)
                                         }
-                                        Text("$${String.format("%.2f", order.totalAmount)}", fontWeight = FontWeight.Bold)
+                                        Text(formatRupees(order.totalAmount), fontWeight = FontWeight.Bold, color = ParrotGreen)
                                     }
                                 }
                             }
@@ -314,7 +321,7 @@ fun AdminDashboardScreen(
 
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(product.name, fontWeight = FontWeight.Bold, maxLines = 1)
-                                        Text("${product.category.displayName} • $${product.price} (Stock: ${product.stock})", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
+                                        Text("${product.category.displayName} • ${formatRupees(product.price)} (Stock: ${product.stock})", style = MaterialTheme.typography.bodySmall, color = Color.Gray)
                                         StockBadge(stock = product.stock)
                                     }
 
@@ -355,7 +362,7 @@ fun AdminDashboardScreen(
                                             Text("#${order.orderId}", fontWeight = FontWeight.Bold, color = ForestGreenDark)
                                             Text("Customer: ${order.customerName} (${order.phone})", style = MaterialTheme.typography.bodySmall)
                                         }
-                                        Text("$${String.format("%.2f", order.totalAmount)}", fontWeight = FontWeight.Bold, color = ForestGreenPrimary)
+                                        Text(formatRupees(order.totalAmount), fontWeight = FontWeight.Bold, color = ParrotGreen)
                                     }
 
                                     Spacer(modifier = Modifier.height(8.dp))
@@ -490,7 +497,7 @@ fun AdminDashboardScreen(
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Product Name *") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(value = price, onValueChange = { price = it }, label = { Text("Price ($) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = price, onValueChange = { price = it }, label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = stock, onValueChange = { stock = it }, label = { Text("Stock Quantity *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(value = shortDesc, onValueChange = { shortDesc = it }, label = { Text("Short Description") }, modifier = Modifier.fillMaxWidth())
                 }

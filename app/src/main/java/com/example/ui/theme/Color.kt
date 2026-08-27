@@ -2,37 +2,48 @@ package com.example.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Terrarium Brand Colors - Nature-inspired, modern urban botanical palette
-val ForestGreenPrimary = Color(0xFF234E28)
-val ForestGreenDark = Color(0xFF153319)
-val ForestGreenLight = Color(0xFF3B6E41)
-val FoliageGreen = Color(0xFF4C8055)
-val SageGreen = Color(0xFF7FA983)
-val MintLight = Color(0xFFE2EFE3)
-val SoftSageContainer = Color(0xFFD3E7D6)
+// Contemporary Indian Botanical Color Palette
+val DeepNeem = Color(0xFF123C2A)
+val ParrotGreen = Color(0xFF3F8F55)
+val MangoLeaf = Color(0xFF79B85A)
+val TurmericYellow = Color(0xFFF2B84B)
+val MarigoldOrange = Color(0xFFE8893A)
+val Terracotta = Color(0xFFC85C3F)
+val LotusPink = Color(0xFFD97978)
+val WarmIvory = Color(0xFFFFF8EC)
+val PistachioMist = Color(0xFFE7F1D7)
+val PeacockTeal = Color(0xFF197A78)
+val CocoaInk = Color(0xFF2B2924)
+val ClayBorder = Color(0xFFE4D3BD)
 
-// Earth & Terracotta Accents
-val TerracottaAccent = Color(0xFFD47053)
-val TerracottaDark = Color(0xFFB55439)
-val TerracottaLight = Color(0xFFF9E8E2)
-val WarmClay = Color(0xFFC48B71)
-val EarthBrown = Color(0xFF5D4037)
+// Semantic & Compatibility Aliases
+val ForestGreenPrimary = ParrotGreen
+val ForestGreenDark = DeepNeem
+val ForestGreenLight = MangoLeaf
+val FoliageGreen = ParrotGreen
+val SageGreen = MangoLeaf
+val MintLight = PistachioMist
+val SoftSageContainer = PistachioMist
 
-// Warm Cream & Neutrals
-val CreamBackground = Color(0xFFFBF9F5)
+val TerracottaAccent = Terracotta
+val TerracottaDark = Terracotta
+val TerracottaLight = Color(0xFFFBECE8)
+val WarmClay = Terracotta
+val EarthBrown = CocoaInk
+
+val CreamBackground = WarmIvory
 val SurfaceCream = Color(0xFFFFFFFF)
-val SurfaceCreamVariant = Color(0xFFF4F0E8)
-val WarmSand = Color(0xFFEBE5D8)
-val SoftBorder = Color(0xFFE2DCD2)
+val SurfaceCreamVariant = WarmIvory
+val WarmSand = ClayBorder
+val SoftBorder = ClayBorder
 
-// Text Colors
-val TextDarkGreen = Color(0xFF122415)
-val TextMedium = Color(0xFF4A554D)
-val TextMuted = Color(0xFF76857A)
+val TextDarkGreen = DeepNeem
+val TextMedium = CocoaInk.copy(alpha = 0.8f)
+val TextMuted = CocoaInk.copy(alpha = 0.6f)
 val TextLight = Color(0xFFFFFFFF)
 
-// Status & Indicators
-val SunAmber = Color(0xFFE5A023)
-val WaterBlue = Color(0xFF3897C7)
+val SunAmber = TurmericYellow
+val WaterBlue = PeacockTeal
 val AlertRed = Color(0xFFD32F2F)
-val SuccessGreen = Color(0xFF2E7D32)
+val SuccessGreen = ParrotGreen
+

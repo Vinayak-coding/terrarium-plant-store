@@ -55,14 +55,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.QuizRecommendationResult
+import com.example.data.model.formatRupees
 import com.example.ui.components.BotanicalIllustration
 import com.example.ui.components.BundleKitCard
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
 import com.example.ui.theme.ForestGreenDark
 import com.example.ui.theme.ForestGreenPrimary
 import com.example.ui.theme.MintLight
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
 import com.example.ui.theme.SageGreen
 import com.example.ui.theme.SoftSageContainer
 import com.example.ui.theme.SunAmber
+import com.example.ui.theme.Terracotta
 import com.example.ui.theme.TerracottaAccent
 import com.example.ui.theme.TerracottaDark
 import com.example.ui.viewmodel.TerrariumViewModel
@@ -140,9 +146,9 @@ val quizQuestions = listOf(
         title = "What is your main goal for this plant?",
         subtitle = "Choose your top botanical benefit",
         options = listOf(
-            QuizOption("Clean & Purify Air", "Air", "NASA rated to remove indoor toxins & toxins"),
+            QuizOption("Fresh Oxygen & Air Purity", "Air", "Natural fresh oxygen & low-maintenance greenery"),
             QuizOption("100% Pet Friendly", "Pet", "Safe if curious cats or dogs take a nibble"),
-            QuizOption("Fresh Culinary Herbs", "Herb", "Harvest delicious leaves for cooking"),
+            QuizOption("Fresh Culinary Herbs", "Herb", "Harvest delicious leaves for Indian cooking & teas"),
             QuizOption("Aesthetic Decor & Calm", "Decor", "Lush visual beauty and stress relief")
         )
     ),
@@ -151,9 +157,9 @@ val quizQuestions = listOf(
         title = "What is your preferred budget?",
         subtitle = "Terrarium offers premium plants for every budget",
         options = listOf(
-            QuizOption("Under $25", "Budget", "Affordable starter plants & pots"),
-            QuizOption("$25 - $45", "Standard", "Complete potted favorites"),
-            QuizOption("$45+", "Premium", "Large specimens & complete kit bundles")
+            QuizOption("Under ₹499", "Budget", "Affordable starter plants & terracotta pots"),
+            QuizOption("₹499 - ₹1,199", "Standard", "Complete potted nursery favorites"),
+            QuizOption("₹1,200+", "Premium", "Large specimens & complete kit bundles")
         )
     )
 )
@@ -446,10 +452,10 @@ fun QuizResultsView(
                         }
 
                         Text(
-                            text = "$${String.format("%.2f", match.product.discountPrice ?: match.product.price)}",
+                            text = formatRupees(match.product.discountPrice ?: match.product.price),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenPrimary
+                            color = ParrotGreen
                         )
                     }
 

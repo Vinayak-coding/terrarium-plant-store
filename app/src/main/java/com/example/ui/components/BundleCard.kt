@@ -42,13 +42,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.BorderStroke
 import com.example.data.model.BundleKit
-import com.example.ui.theme.ForestGreenDark
-import com.example.ui.theme.ForestGreenPrimary
-import com.example.ui.theme.MintLight
-import com.example.ui.theme.SageGreen
-import com.example.ui.theme.SoftSageContainer
-import com.example.ui.theme.TerracottaAccent
+import com.example.data.model.formatRupees
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
+import com.example.ui.theme.Terracotta
+import com.example.ui.theme.WarmIvory
 
 @Composable
 fun BundleKitCard(
@@ -57,12 +59,13 @@ fun BundleKitCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
+        border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.7f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(20.dp))
             .testTag("bundle_card_${bundle.id}")
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -75,7 +78,7 @@ fun BundleKitCard(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .background(TerracottaAccent)
+                        .background(Terracotta)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -90,7 +93,7 @@ fun BundleKitCard(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(SoftSageContainer),
+                        .background(PistachioMist),
                     contentAlignment = Alignment.Center
                 ) {
                     val icon = when (bundle.iconType) {
@@ -105,7 +108,7 @@ fun BundleKitCard(
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = ForestGreenDark,
+                        tint = DeepNeem,
                         modifier = Modifier.size(22.dp)
                     )
                 }
@@ -117,7 +120,7 @@ fun BundleKitCard(
                 text = bundle.title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = ForestGreenDark
+                color = DeepNeem
             )
             Text(
                 text = bundle.subtitle,
@@ -131,8 +134,8 @@ fun BundleKitCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(MintLight.copy(alpha = 0.5f))
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(PistachioMist.copy(alpha = 0.5f))
                     .padding(12.dp)
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -140,21 +143,21 @@ fun BundleKitCard(
                         text = "What's in the Box:",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
-                        color = ForestGreenDark
+                        color = DeepNeem
                     )
                     bundle.includedItemNames.forEach { item ->
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.CheckCircle,
                                 contentDescription = null,
-                                tint = ForestGreenPrimary,
+                                tint = ParrotGreen,
                                 modifier = Modifier.size(14.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = item,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = ForestGreenDark
+                                color = DeepNeem
                             )
                         }
                     }
@@ -177,14 +180,14 @@ fun BundleKitCard(
                     )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            text = "$${String.format("%.2f", bundle.bundlePrice)}",
+                            text = formatRupees(bundle.bundlePrice),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenPrimary
+                            color = ParrotGreen
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "$${String.format("%.2f", bundle.originalPrice)}",
+                            text = formatRupees(bundle.originalPrice),
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 textDecoration = TextDecoration.LineThrough
                             ),
@@ -195,7 +198,7 @@ fun BundleKitCard(
 
                 Button(
                     onClick = onAddKitToCart,
-                    colors = ButtonDefaults.buttonColors(containerColor = ForestGreenPrimary),
+                    colors = ButtonDefaults.buttonColors(containerColor = ParrotGreen),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.testTag("add_bundle_btn_${bundle.id}")
                 ) {

@@ -1,10 +1,11 @@
 package com.example.ui.screens.cart
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,18 +17,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Discount
 import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Payment
-import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Payments
+import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.Storefront
@@ -35,10 +40,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -59,24 +69,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.model.DeliveryOption
+import com.example.data.model.IndianStatesAndUTs
 import com.example.data.model.Order
 import com.example.data.model.PaymentMethod
 import com.example.data.model.Product
+import com.example.data.model.formatRupees
 import com.example.ui.components.BotanicalIllustration
 import com.example.ui.components.EmptyStateView
 import com.example.ui.theme.AlertRed
-import com.example.ui.theme.ForestGreenDark
-import com.example.ui.theme.ForestGreenPrimary
-import com.example.ui.theme.MintLight
-import com.example.ui.theme.SoftSageContainer
-import com.example.ui.theme.SuccessGreen
-import com.example.ui.theme.TerracottaAccent
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
+import com.example.ui.theme.MangoLeaf
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
+import com.example.ui.theme.Terracotta
 import com.example.ui.theme.TerracottaLight
+import com.example.ui.theme.WarmIvory
 import com.example.ui.viewmodel.TerrariumViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartAndCheckoutScreen(
     viewModel: TerrariumViewModel,
@@ -95,12 +110,18 @@ fun CartAndCheckoutScreen(
     var nameInput by remember(currentUser) { mutableStateOf(currentUser.name) }
     var phoneInput by remember(currentUser) { mutableStateOf(currentUser.phone) }
     var emailInput by remember(currentUser) { mutableStateOf(currentUser.email) }
-    var addressInput by remember(currentUser) { mutableStateOf(currentUser.defaultAddress) }
+    var flatHouseInput by remember(currentUser) { mutableStateOf(currentUser.flatHouse) }
+    var streetInput by remember(currentUser) { mutableStateOf(currentUser.street) }
+    var localityInput by remember(currentUser) { mutableStateOf(currentUser.locality) }
+    var landmarkInput by remember(currentUser) { mutableStateOf(currentUser.landmark) }
     var cityInput by remember(currentUser) { mutableStateOf(currentUser.city) }
-    var postalInput by remember(currentUser) { mutableStateOf(currentUser.postalCode) }
+    var stateInput by remember(currentUser) { mutableStateOf(currentUser.state) }
+    var pinCodeInput by remember(currentUser) { mutableStateOf(currentUser.pinCode) }
+
+    var stateDropdownExpanded by remember { mutableStateOf(false) }
 
     var deliveryOption by remember { mutableStateOf(DeliveryOption.STANDARD_DELIVERY) }
-    var paymentMethod by remember { mutableStateOf(PaymentMethod.ONLINE_CARD_UPI) }
+    var paymentMethod by remember { mutableStateOf(PaymentMethod.UPI) }
     var couponInput by remember { mutableStateOf("") }
     var validationError by remember { mutableStateOf<String?>(null) }
 
@@ -120,11 +141,8 @@ fun CartAndCheckoutScreen(
         else -> 0.0
     }
 
-    val deliveryFee = if (appliedCoupon == "FREESHIP" || subtotal >= 40.0 || deliveryOption == DeliveryOption.STORE_PICKUP) {
-        0.0
-    } else {
-        deliveryOption.fee
-    }
+    val isFreeDelivery = appliedCoupon == "FREESHIP" || subtotal >= 999.0 || deliveryOption == DeliveryOption.STORE_PICKUP
+    val deliveryFee = if (isFreeDelivery) 0.0 else deliveryOption.fee
 
     val grandTotal = maxOf(0.0, subtotal - discountAmount + deliveryFee)
 
@@ -141,22 +159,22 @@ fun CartAndCheckoutScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = DeepNeem)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Your Cart",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = ForestGreenDark
+                        color = DeepNeem
                     )
                 }
 
                 EmptyStateView(
                     title = "Your shopping cart is empty",
-                    message = "Add fresh indoor plants, ceramic pots, or complete care kits to get started.",
+                    message = "Add live indoor plants, terracotta planters, or complete plant-care kits to begin.",
                     icon = Icons.Default.ShoppingBag,
-                    actionButtonText = "Explore Catalogue",
+                    actionButtonText = "Explore Plants",
                     onActionClick = onExploreClick
                 )
             }
@@ -174,14 +192,14 @@ fun CartAndCheckoutScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = ForestGreenDark)
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = DeepNeem)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Shopping Cart (${cartProducts.sumOf { it.second }})",
+                        text = "Shopping Cart (${cartProducts.sumOf { it.second }} items)",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = ForestGreenDark
+                        color = DeepNeem
                     )
                 }
 
@@ -198,6 +216,7 @@ fun CartAndCheckoutScreen(
                             Card(
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
@@ -225,14 +244,14 @@ fun CartAndCheckoutScreen(
                                             text = product.name,
                                             style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
                                             fontWeight = FontWeight.Bold,
-                                            color = ForestGreenDark,
+                                            color = DeepNeem,
                                             maxLines = 1
                                         )
                                         Text(
-                                            text = "$${String.format("%.2f", product.discountPrice ?: product.price)}",
+                                            text = formatRupees(product.discountPrice ?: product.price),
                                             style = MaterialTheme.typography.bodyMedium,
                                             fontWeight = FontWeight.Bold,
-                                            color = ForestGreenPrimary
+                                            color = ParrotGreen
                                         )
 
                                         Spacer(modifier = Modifier.height(6.dp))
@@ -242,25 +261,26 @@ fun CartAndCheckoutScreen(
                                             verticalAlignment = Alignment.CenterVertically,
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(8.dp))
-                                                .background(SoftSageContainer)
+                                                .background(PistachioMist)
                                         ) {
                                             IconButton(
                                                 onClick = { viewModel.updateCartQuantity(item.id, item.quantity - 1) },
                                                 modifier = Modifier.size(28.dp)
                                             ) {
-                                                Icon(Icons.Default.Remove, contentDescription = "Minus", modifier = Modifier.size(14.dp))
+                                                Icon(Icons.Default.Remove, contentDescription = "Minus", modifier = Modifier.size(14.dp), tint = DeepNeem)
                                             }
                                             Text(
                                                 text = "${item.quantity}",
                                                 style = MaterialTheme.typography.labelMedium,
                                                 fontWeight = FontWeight.Bold,
+                                                color = DeepNeem,
                                                 modifier = Modifier.padding(horizontal = 6.dp)
                                             )
                                             IconButton(
                                                 onClick = { viewModel.updateCartQuantity(item.id, item.quantity + 1) },
                                                 modifier = Modifier.size(28.dp)
                                             ) {
-                                                Icon(Icons.Default.Add, contentDescription = "Plus", modifier = Modifier.size(14.dp))
+                                                Icon(Icons.Default.Add, contentDescription = "Plus", modifier = Modifier.size(14.dp), tint = DeepNeem)
                                             }
                                         }
                                     }
@@ -280,6 +300,7 @@ fun CartAndCheckoutScreen(
                 Card(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -289,13 +310,13 @@ fun CartAndCheckoutScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Icon(Icons.Default.Discount, contentDescription = null, tint = ForestGreenPrimary, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Discount, contentDescription = null, tint = ParrotGreen, modifier = Modifier.size(20.dp))
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "Have a Promo Code?",
+                                text = "Have a Promo / Discount Coupon?",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = ForestGreenDark
+                                color = DeepNeem
                             )
                         }
 
@@ -306,19 +327,19 @@ fun CartAndCheckoutScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clip(RoundedCornerShape(10.dp))
-                                    .background(MintLight)
+                                    .background(PistachioMist)
                                     .padding(horizontal = 12.dp, vertical = 8.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(Icons.Default.Check, contentDescription = null, tint = ForestGreenPrimary, modifier = Modifier.size(16.dp))
+                                    Icon(Icons.Default.Check, contentDescription = null, tint = ParrotGreen, modifier = Modifier.size(16.dp))
                                     Spacer(modifier = Modifier.width(6.dp))
                                     Text(
-                                        text = "Coupon $appliedCoupon applied!",
+                                        text = "Coupon '$appliedCoupon' Applied!",
                                         style = MaterialTheme.typography.labelMedium,
                                         fontWeight = FontWeight.Bold,
-                                        color = ForestGreenDark
+                                        color = DeepNeem
                                     )
                                 }
                                 IconButton(onClick = { viewModel.removeCoupon() }, modifier = Modifier.size(24.dp)) {
@@ -344,10 +365,10 @@ fun CartAndCheckoutScreen(
                                         viewModel.applyCoupon(couponInput)
                                         couponInput = ""
                                     },
-                                    colors = ButtonDefaults.buttonColors(containerColor = ForestGreenPrimary),
+                                    colors = ButtonDefaults.buttonColors(containerColor = ParrotGreen),
                                     shape = RoundedCornerShape(12.dp)
                                 ) {
-                                    Text("Apply")
+                                    Text("Apply", color = Color.White)
                                 }
                             }
                             if (couponError != null) {
@@ -364,10 +385,11 @@ fun CartAndCheckoutScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // 3. Checkout Form (Shipping & Contact)
+                // 3. Indian Delivery Details & Address Form
                 Card(
                     shape = RoundedCornerShape(18.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -376,12 +398,19 @@ fun CartAndCheckoutScreen(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Text(
-                            text = "Delivery Details",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = ForestGreenDark
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Delivery Address & Contact",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = DeepNeem
+                            )
+                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = Terracotta)
+                        }
 
                         OutlinedTextField(
                             value = nameInput,
@@ -398,7 +427,8 @@ fun CartAndCheckoutScreen(
                             OutlinedTextField(
                                 value = phoneInput,
                                 onValueChange = { phoneInput = it },
-                                label = { Text("Phone *") },
+                                label = { Text("Mobile (+91) *") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                                 singleLine = true,
                                 modifier = Modifier.weight(1f)
                             )
@@ -406,15 +436,24 @@ fun CartAndCheckoutScreen(
                                 value = emailInput,
                                 onValueChange = { emailInput = it },
                                 label = { Text("Email *") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                                 singleLine = true,
                                 modifier = Modifier.weight(1.2f)
                             )
                         }
 
                         OutlinedTextField(
-                            value = addressInput,
-                            onValueChange = { addressInput = it },
-                            label = { Text("Delivery Address *") },
+                            value = flatHouseInput,
+                            onValueChange = { flatHouseInput = it },
+                            label = { Text("Flat / House No., Building / Apartment *") },
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        OutlinedTextField(
+                            value = streetInput,
+                            onValueChange = { streetInput = it },
+                            label = { Text("Street / Road / Sector / Colony *") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -424,66 +463,147 @@ fun CartAndCheckoutScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             OutlinedTextField(
-                                value = cityInput,
-                                onValueChange = { cityInput = it },
-                                label = { Text("City") },
+                                value = localityInput,
+                                onValueChange = { localityInput = it },
+                                label = { Text("Area / Locality") },
                                 singleLine = true,
                                 modifier = Modifier.weight(1f)
                             )
                             OutlinedTextField(
-                                value = postalInput,
-                                onValueChange = { postalInput = it },
-                                label = { Text("Postal Code") },
+                                value = landmarkInput,
+                                onValueChange = { landmarkInput = it },
+                                label = { Text("Landmark (Optional)") },
                                 singleLine = true,
                                 modifier = Modifier.weight(1f)
                             )
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedTextField(
+                                value = cityInput,
+                                onValueChange = { cityInput = it },
+                                label = { Text("City *") },
+                                singleLine = true,
+                                modifier = Modifier.weight(1f)
+                            )
+                            OutlinedTextField(
+                                value = pinCodeInput,
+                                onValueChange = { pinCodeInput = it },
+                                label = { Text("PIN Code *") },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+
+                        // State / UT Selection Dropdown
+                        ExposedDropdownMenuBox(
+                            expanded = stateDropdownExpanded,
+                            onExpandedChange = { stateDropdownExpanded = !stateDropdownExpanded },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            OutlinedTextField(
+                                value = stateInput,
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text("State / UT *") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = stateDropdownExpanded) },
+                                modifier = Modifier
+                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                                    .fillMaxWidth()
+                            )
+                            ExposedDropdownMenu(
+                                expanded = stateDropdownExpanded,
+                                onDismissRequest = { stateDropdownExpanded = false }
+                            ) {
+                                IndianStatesAndUTs.forEach { stateName ->
+                                    DropdownMenuItem(
+                                        text = { Text(stateName) },
+                                        onClick = {
+                                            stateInput = stateName
+                                            stateDropdownExpanded = false
+                                        }
+                                    )
+                                }
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(6.dp))
 
                         // Delivery Method Selection
                         Text(
-                            text = "Delivery Method",
+                            text = "Choose Nursery Delivery Method",
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenDark
+                            color = DeepNeem
                         )
 
+                        // Standard Delivery
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(if (deliveryOption == DeliveryOption.STANDARD_DELIVERY) MintLight else Color.Transparent)
-                                .padding(4.dp)
+                                .background(if (deliveryOption == DeliveryOption.STANDARD_DELIVERY) PistachioMist else Color.Transparent)
+                                .clickable { deliveryOption = DeliveryOption.STANDARD_DELIVERY }
+                                .padding(6.dp)
                         ) {
                             RadioButton(
                                 selected = deliveryOption == DeliveryOption.STANDARD_DELIVERY,
-                                onClick = { deliveryOption = DeliveryOption.STANDARD_DELIVERY }
+                                onClick = { deliveryOption = DeliveryOption.STANDARD_DELIVERY },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Column {
-                                Text("Standard Plant-Safe Delivery ($5.00)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                                Text("Delivered in 2-3 business days (Free over $40)", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("Standard Plant-Safe Delivery (₹99)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                                Text("Delivered in 3-5 business days (FREE on orders over ₹999)", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
 
+                        // Express Delivery
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(if (deliveryOption == DeliveryOption.STORE_PICKUP) MintLight else Color.Transparent)
-                                .padding(4.dp)
+                                .background(if (deliveryOption == DeliveryOption.EXPRESS_DELIVERY) PistachioMist else Color.Transparent)
+                                .clickable { deliveryOption = DeliveryOption.EXPRESS_DELIVERY }
+                                .padding(6.dp)
                         ) {
                             RadioButton(
-                                selected = deliveryOption == DeliveryOption.STORE_PICKUP,
-                                onClick = { deliveryOption = DeliveryOption.STORE_PICKUP }
+                                selected = deliveryOption == DeliveryOption.EXPRESS_DELIVERY,
+                                onClick = { deliveryOption = DeliveryOption.EXPRESS_DELIVERY },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Column {
-                                Text("In-Store Nursery Pickup (FREE)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                                Text("Ready in 2 hours at Terrarium Urban Greenhouse", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("Express Priority Delivery (₹199)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                                Text("Delivered in 1-2 business days with special climate cushioning", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+
+                        // Store Pickup
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (deliveryOption == DeliveryOption.STORE_PICKUP) PistachioMist else Color.Transparent)
+                                .clickable { deliveryOption = DeliveryOption.STORE_PICKUP }
+                                .padding(6.dp)
+                        ) {
+                            RadioButton(
+                                selected = deliveryOption == DeliveryOption.STORE_PICKUP,
+                                onClick = { deliveryOption = DeliveryOption.STORE_PICKUP },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Column {
+                                Text("Terrarium Experience Nursery Pickup (FREE)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                                Text("Ready in 2 hours at Terrarium Greenhouse Studios", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
 
@@ -494,28 +614,87 @@ fun CartAndCheckoutScreen(
                             text = "Payment Method",
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenDark
+                            color = DeepNeem
                         )
 
+                        // UPI
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (paymentMethod == PaymentMethod.UPI) PistachioMist else Color.Transparent)
+                                .clickable { paymentMethod = PaymentMethod.UPI }
+                                .padding(6.dp)
                         ) {
                             RadioButton(
-                                selected = paymentMethod == PaymentMethod.ONLINE_CARD_UPI,
-                                onClick = { paymentMethod = PaymentMethod.ONLINE_CARD_UPI }
+                                selected = paymentMethod == PaymentMethod.UPI,
+                                onClick = { paymentMethod = PaymentMethod.UPI },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
                             )
-                            Text("Online Card / UPI (Demo Flow)", style = MaterialTheme.typography.bodyMedium)
+                            Icon(Icons.Default.QrCode, contentDescription = null, tint = ParrotGreen, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("UPI (Google Pay, PhonePe, Paytm, BHIM)", style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
                         }
+
+                        // Cash on Delivery
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (paymentMethod == PaymentMethod.CASH_ON_DELIVERY) PistachioMist else Color.Transparent)
+                                .clickable { paymentMethod = PaymentMethod.CASH_ON_DELIVERY }
+                                .padding(6.dp)
                         ) {
                             RadioButton(
                                 selected = paymentMethod == PaymentMethod.CASH_ON_DELIVERY,
-                                onClick = { paymentMethod = PaymentMethod.CASH_ON_DELIVERY }
+                                onClick = { paymentMethod = PaymentMethod.CASH_ON_DELIVERY },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
                             )
-                            Text("Cash on Delivery / Pickup", style = MaterialTheme.typography.bodyMedium)
+                            Icon(Icons.Default.Payments, contentDescription = null, tint = Terracotta, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Cash on Delivery (Pay upon safe doorstep arrival)", style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                        }
+
+                        // Card
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (paymentMethod == PaymentMethod.CARD) PistachioMist else Color.Transparent)
+                                .clickable { paymentMethod = PaymentMethod.CARD }
+                                .padding(6.dp)
+                        ) {
+                            RadioButton(
+                                selected = paymentMethod == PaymentMethod.CARD,
+                                onClick = { paymentMethod = PaymentMethod.CARD },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
+                            )
+                            Icon(Icons.Default.CreditCard, contentDescription = null, tint = ParrotGreen, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Debit / Credit Card (Visa, RuPay, MasterCard)", style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                        }
+
+                        // Net Banking
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (paymentMethod == PaymentMethod.NET_BANKING) PistachioMist else Color.Transparent)
+                                .clickable { paymentMethod = PaymentMethod.NET_BANKING }
+                                .padding(6.dp)
+                        ) {
+                            RadioButton(
+                                selected = paymentMethod == PaymentMethod.NET_BANKING,
+                                onClick = { paymentMethod = PaymentMethod.NET_BANKING },
+                                colors = RadioButtonDefaults.colors(selectedColor = ParrotGreen)
+                            )
+                            Icon(Icons.Default.AccountBalance, contentDescription = null, tint = DeepNeem, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("Net Banking (SBI, HDFC, ICICI, Axis)", style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
                         }
                     }
                 }
@@ -526,6 +705,7 @@ fun CartAndCheckoutScreen(
                 Card(
                     shape = RoundedCornerShape(18.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -535,18 +715,18 @@ fun CartAndCheckoutScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "Order Calculation",
+                            text = "Price Details",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenDark
+                            color = DeepNeem
                         )
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("Subtotal", style = MaterialTheme.typography.bodyMedium)
-                            Text("$${String.format("%.2f", subtotal)}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                            Text("Subtotal", style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                            Text(formatRupees(subtotal), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = DeepNeem)
                         }
 
                         if (discountAmount > 0) {
@@ -554,8 +734,8 @@ fun CartAndCheckoutScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text("Discount ($appliedCoupon)", style = MaterialTheme.typography.bodyMedium, color = ForestGreenPrimary)
-                                Text("-$${String.format("%.2f", discountAmount)}", style = MaterialTheme.typography.bodyMedium, color = ForestGreenPrimary, fontWeight = FontWeight.Bold)
+                                Text("Coupon Discount ($appliedCoupon)", style = MaterialTheme.typography.bodyMedium, color = ParrotGreen)
+                                Text("-${formatRupees(discountAmount)}", style = MaterialTheme.typography.bodyMedium, color = ParrotGreen, fontWeight = FontWeight.Bold)
                             }
                         }
 
@@ -563,15 +743,16 @@ fun CartAndCheckoutScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("Delivery Fee", style = MaterialTheme.typography.bodyMedium)
+                            Text("Plant-Safe Delivery Fee", style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
                             Text(
-                                if (deliveryFee == 0.0) "FREE" else "$${String.format("%.2f", deliveryFee)}",
+                                if (deliveryFee == 0.0) "FREE" else formatRupees(deliveryFee),
                                 style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                color = if (deliveryFee == 0.0) ParrotGreen else DeepNeem
                             )
                         }
 
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp), color = ClayBorder)
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -579,16 +760,16 @@ fun CartAndCheckoutScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Grand Total",
+                                text = "Total Amount",
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
-                                color = ForestGreenDark
+                                color = DeepNeem
                             )
                             Text(
-                                text = "$${String.format("%.2f", grandTotal)}",
+                                text = formatRupees(grandTotal),
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = ForestGreenPrimary
+                                color = ParrotGreen
                             )
                         }
 
@@ -597,16 +778,16 @@ fun CartAndCheckoutScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(SoftSageContainer)
+                                .background(PistachioMist)
                                 .padding(10.dp)
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Lock, contentDescription = null, tint = ForestGreenPrimary, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Lock, contentDescription = null, tint = DeepNeem, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Demo Checkout Mode — No payment charge will be incurred.",
+                                    text = "Safe & Secure Demo Checkout — No real charge incurred.",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = ForestGreenDark
+                                    color = DeepNeem
                                 )
                             }
                         }
@@ -624,10 +805,21 @@ fun CartAndCheckoutScreen(
                         // Place Demo Order Button
                         Button(
                             onClick = {
-                                if (nameInput.isBlank() || phoneInput.isBlank() || emailInput.isBlank() || addressInput.isBlank()) {
-                                    validationError = "Please fill in your name, phone, email and address."
+                                if (nameInput.isBlank() || phoneInput.isBlank() || emailInput.isBlank() || flatHouseInput.isBlank() || streetInput.isBlank() || cityInput.isBlank() || pinCodeInput.isBlank()) {
+                                    validationError = "Please fill in all mandatory fields marked with *."
                                 } else {
-                                    viewModel.updateUserProfile(nameInput, emailInput, phoneInput, addressInput, cityInput, postalInput)
+                                    viewModel.updateUserProfile(
+                                        name = nameInput,
+                                        email = emailInput,
+                                        phone = phoneInput,
+                                        flatHouse = flatHouseInput,
+                                        street = streetInput,
+                                        locality = localityInput,
+                                        landmark = landmarkInput,
+                                        city = cityInput,
+                                        state = stateInput,
+                                        pinCode = pinCodeInput
+                                    )
                                     viewModel.placeOrder(
                                         cartProducts = cartProducts,
                                         deliveryOption = deliveryOption,
@@ -638,7 +830,7 @@ fun CartAndCheckoutScreen(
                                     )
                                 }
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = TerracottaAccent),
+                            colors = ButtonDefaults.buttonColors(containerColor = Terracotta),
                             shape = RoundedCornerShape(14.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -646,7 +838,7 @@ fun CartAndCheckoutScreen(
                                 .testTag("cart_place_order_btn")
                         ) {
                             Text(
-                                text = "Place Demo Order ($${String.format("%.2f", grandTotal)})",
+                                text = "Place Order (${formatRupees(grandTotal)})",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White

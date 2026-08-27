@@ -184,7 +184,7 @@ fun WelcomeAuthScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "NASA Air Purifying & Pet-Safe Indoor Plants",
+                                text = "Beginner-Friendly & Low-Light Botanical Plants",
                                 style = MaterialTheme.typography.labelMedium,
                                 color = Color.White,
                                 fontWeight = FontWeight.SemiBold

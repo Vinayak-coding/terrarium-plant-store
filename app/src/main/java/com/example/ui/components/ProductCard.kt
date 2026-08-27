@@ -40,6 +40,14 @@ import com.example.ui.theme.ForestGreenDark
 import com.example.ui.theme.ForestGreenPrimary
 import com.example.ui.theme.TerracottaAccent
 
+import androidx.compose.foundation.BorderStroke
+import com.example.data.model.formatRupees
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.Terracotta
+import com.example.ui.theme.WarmIvory
+
 @Composable
 fun ProductGridCard(
     product: Product,
@@ -50,12 +58,13 @@ fun ProductGridCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onProductClick)
             .testTag("product_card_${product.id}")
     ) {
@@ -86,7 +95,7 @@ fun ProductGridCard(
                     Icon(
                         imageVector = if (isInWishlist) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = "Wishlist",
-                        tint = if (isInWishlist) TerracottaAccent else Color.Gray,
+                        tint = if (isInWishlist) Terracotta else Color.Gray,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -98,7 +107,7 @@ fun ProductGridCard(
                             .align(Alignment.BottomStart)
                             .padding(6.dp)
                             .clip(RoundedCornerShape(6.dp))
-                            .background(ForestGreenDark.copy(alpha = 0.85f))
+                            .background(DeepNeem.copy(alpha = 0.9f))
                             .padding(horizontal = 6.dp, vertical = 2.dp)
                     ) {
                         Text(
@@ -124,7 +133,7 @@ fun ProductGridCard(
                 text = product.name,
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 14.sp),
                 fontWeight = FontWeight.Bold,
-                color = ForestGreenDark,
+                color = DeepNeem,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -152,15 +161,15 @@ fun ProductGridCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val priceToDisplay = product.discountPrice ?: product.price
                     Text(
-                        text = "$${String.format("%.2f", priceToDisplay)}",
+                        text = formatRupees(priceToDisplay),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = ForestGreenPrimary
+                        color = ParrotGreen
                     )
                     if (product.discountPrice != null) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "$${String.format("%.2f", product.price)}",
+                            text = formatRupees(product.price),
                             style = MaterialTheme.typography.bodySmall.copy(
                                 textDecoration = TextDecoration.LineThrough,
                                 fontSize = 11.sp
@@ -175,7 +184,7 @@ fun ProductGridCard(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(if (product.stock > 0) ForestGreenPrimary else Color.LightGray)
+                        .background(if (product.stock > 0) ParrotGreen else Color.LightGray)
                         .clickable(enabled = product.stock > 0, onClick = onAddToCart)
                         .testTag("add_to_cart_btn_${product.id}"),
                     contentAlignment = Alignment.Center
@@ -202,12 +211,13 @@ fun ProductListCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, ClayBorder.copy(alpha = 0.6f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onProductClick)
             .testTag("product_list_card_${product.id}")
     ) {
@@ -220,7 +230,7 @@ fun ProductListCard(
             Box(
                 modifier = Modifier
                     .size(96.dp)
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(12.dp))
             ) {
                 BotanicalIllustration(
                     imageIndex = product.imageIndex,
@@ -249,7 +259,7 @@ fun ProductListCard(
                     text = product.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = ForestGreenDark,
+                    color = DeepNeem,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -276,15 +286,15 @@ fun ProductListCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         val displayPrice = product.discountPrice ?: product.price
                         Text(
-                            text = "$${String.format("%.2f", displayPrice)}",
+                            text = formatRupees(displayPrice),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = ForestGreenPrimary
+                            color = ParrotGreen
                         )
                         if (product.discountPrice != null) {
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = "$${String.format("%.2f", product.price)}",
+                                text = formatRupees(product.price),
                                 style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.LineThrough),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -299,7 +309,7 @@ fun ProductListCard(
                             Icon(
                                 imageVector = if (isInWishlist) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
                                 contentDescription = "Wishlist",
-                                tint = if (isInWishlist) TerracottaAccent else Color.Gray,
+                                tint = if (isInWishlist) Terracotta else Color.Gray,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
@@ -307,7 +317,7 @@ fun ProductListCard(
                             modifier = Modifier
                                 .size(34.dp)
                                 .clip(RoundedCornerShape(8.dp))
-                                .background(if (product.stock > 0) ForestGreenPrimary else Color.LightGray)
+                                .background(if (product.stock > 0) ParrotGreen else Color.LightGray)
                                 .clickable(enabled = product.stock > 0, onClick = onAddToCart),
                             contentAlignment = Alignment.Center
                         ) {

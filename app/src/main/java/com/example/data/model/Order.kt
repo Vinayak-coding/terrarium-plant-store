@@ -12,14 +12,17 @@ enum class OrderStatus(val displayName: String, val stepIndex: Int) {
     DELIVERED("Delivered", 5)
 }
 
-enum class DeliveryOption(val displayName: String, val fee: Double) {
-    STANDARD_DELIVERY("Standard Eco Delivery", 5.0),
-    STORE_PICKUP("Terrarium Store Pickup (Free)", 0.0)
+enum class DeliveryOption(val displayName: String, val fee: Double, val estimatedTime: String) {
+    STANDARD_DELIVERY("Standard Nursery Delivery", 99.0, "3-5 Business Days"),
+    EXPRESS_DELIVERY("Express Priority Delivery", 199.0, "1-2 Business Days"),
+    STORE_PICKUP("Terrarium Experience Nursery Pickup (Free)", 0.0, "Ready in 2 Hours")
 }
 
 enum class PaymentMethod(val displayName: String) {
-    ONLINE_CARD_UPI("Demo Online Card / UPI"),
-    CASH_ON_DELIVERY("Cash on Delivery")
+    UPI("UPI (Google Pay, PhonePe, Paytm, BHIM)"),
+    CASH_ON_DELIVERY("Cash on Delivery (COD)"),
+    CARD("Debit / Credit Card (Visa, RuPay, MasterCard)"),
+    NET_BANKING("Net Banking (SBI, HDFC, ICICI, Axis)")
 }
 
 @Entity(tableName = "orders")
@@ -41,7 +44,12 @@ data class Order(
     val createdAt: Long = System.currentTimeMillis(),
     val expectedDeliveryDate: String,
     val couponApplied: String? = null,
-    val itemsSummary: String = ""
+    val itemsSummary: String = "",
+    val state: String = "Maharashtra",
+    val flatHouse: String = "",
+    val street: String = "",
+    val locality: String = "",
+    val landmark: String = ""
 )
 
 @Entity(tableName = "order_items")
@@ -53,3 +61,4 @@ data class OrderItem(
     val productPrice: Double,
     val quantity: Int
 )
+

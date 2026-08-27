@@ -40,11 +40,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.data.model.formatRupees
 import com.example.ui.components.BotanicalIllustration
 import com.example.ui.components.EmptyStateView
 import com.example.ui.components.StockBadge
+import com.example.ui.theme.ClayBorder
+import com.example.ui.theme.DeepNeem
 import com.example.ui.theme.ForestGreenDark
 import com.example.ui.theme.ForestGreenPrimary
+import com.example.ui.theme.ParrotGreen
+import com.example.ui.theme.PistachioMist
+import com.example.ui.theme.Terracotta
 import com.example.ui.theme.TerracottaAccent
 import com.example.ui.viewmodel.TerrariumViewModel
 
@@ -133,14 +139,14 @@ fun WishlistScreen(
                                         text = product.name,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
-                                        color = ForestGreenDark,
+                                        color = DeepNeem,
                                         maxLines = 1
                                     )
                                     Text(
-                                        text = "$${String.format("%.2f", product.discountPrice ?: product.price)}",
+                                        text = formatRupees(product.discountPrice ?: product.price),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
-                                        color = ForestGreenPrimary
+                                        color = ParrotGreen
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     StockBadge(stock = product.stock)
@@ -155,7 +161,7 @@ fun WishlistScreen(
                                             viewModel.addToCart(product.id, 1)
                                             viewModel.toggleWishlist(product.id)
                                         },
-                                        colors = ButtonDefaults.buttonColors(containerColor = ForestGreenPrimary),
+                                        colors = ButtonDefaults.buttonColors(containerColor = ParrotGreen),
                                         shape = RoundedCornerShape(10.dp),
                                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
                                     ) {

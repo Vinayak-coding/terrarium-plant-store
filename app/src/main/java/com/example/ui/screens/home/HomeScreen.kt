@@ -221,13 +221,13 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = "Spring Urban Green Week",
+                            text = "Monsoon & Festive Green Sale",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = TerracottaDark
                         )
                         Text(
-                            text = "Use coupon GROW20 for 20% off bundles",
+                            text = "Use coupon GROW20 for 20% off all plants & kits",
                             style = MaterialTheme.typography.bodySmall,
                             color = ForestGreenDark
                         )
@@ -519,7 +519,7 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "— Aria M., Verified Terrarium Customer",
+                        text = "— Ananya Sharma, Bengaluru (Verified Customer)",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = ForestGreenPrimary

@@ -110,7 +110,7 @@ class TerrariumRepository(private val database: AppDatabase) {
             subtotal * 0.10
         } else 0.0
 
-        val deliveryFee = if (couponCode?.trim()?.uppercase() == "FREESHIP" || subtotal > 40.0 || deliveryOption == DeliveryOption.STORE_PICKUP) {
+        val deliveryFee = if (couponCode?.trim()?.uppercase() == "FREESHIP" || subtotal >= 999.0 || deliveryOption == DeliveryOption.STORE_PICKUP) {
             0.0
         } else {
             deliveryOption.fee
@@ -118,7 +118,7 @@ class TerrariumRepository(private val database: AppDatabase) {
 
         val totalAmount = maxOf(0.0, subtotal - discount + deliveryFee)
 
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.US)
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale("en", "IN"))
         val expectedDate = dateFormat.format(Date(System.currentTimeMillis() + (86400000L * 3)))
 
         val itemsSummary = cartProducts.joinToString(", ") { "${it.first.name} (x${it.second})" }
@@ -130,7 +130,12 @@ class TerrariumRepository(private val database: AppDatabase) {
             email = user.email,
             address = user.defaultAddress,
             city = user.city,
-            postalCode = user.postalCode,
+            postalCode = user.pinCode,
+            state = user.state,
+            flatHouse = user.flatHouse,
+            street = user.street,
+            locality = user.locality,
+            landmark = user.landmark,
             deliveryOption = deliveryOption,
             paymentMethod = paymentMethod,
             subtotal = subtotal,
