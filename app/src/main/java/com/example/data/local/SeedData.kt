@@ -800,56 +800,15 @@ object SeedData {
         )
     )
 
-    val initialReminders = listOf(
-        CareReminder(
-            id = 1,
-            plantName = "Living Room Snake Plant",
-            plantType = "Sansevieria",
-            reminderType = ReminderType.WATERING,
-            frequencyDays = 14,
-            nextDueDateMillis = System.currentTimeMillis() + (86400000L * 2), // in 2 days
-            isCompleted = false,
-            notes = "Check that soil is dry before giving 250ml water."
-        ),
-        CareReminder(
-            id = 2,
-            plantName = "Balcony Money Plant Vine",
-            plantType = "Golden Pothos",
-            reminderType = ReminderType.WATERING,
-            frequencyDays = 7,
-            nextDueDateMillis = System.currentTimeMillis() + (86400000L * 1), // in 1 day
-            isCompleted = false,
-            notes = "Mist trailing leaves and rotate hanging basket."
-        ),
-        CareReminder(
-            id = 3,
-            plantName = "Desk ZZ Plant",
-            plantType = "Zamioculcas",
-            reminderType = ReminderType.ROTATING,
-            frequencyDays = 14,
-            nextDueDateMillis = System.currentTimeMillis() + (86400000L * 4),
-            isCompleted = false,
-            notes = "Turn pot 90 degrees for even symmetrical foliage growth."
-        ),
-        CareReminder(
-            id = 4,
-            plantName = "Peace Lily Bloom",
-            plantType = "Spathiphyllum",
-            reminderType = ReminderType.FERTILIZING,
-            frequencyDays = 30,
-            nextDueDateMillis = System.currentTimeMillis() + (86400000L * 6),
-            isCompleted = false,
-            notes = "Add 2 spoons of organic vermicompost to topsoil."
-        )
-    )
+    val initialReminders: List<CareReminder> = emptyList()
 
     val initialReviews = listOf(
         Review(
             id = 1,
             productId = 1,
-            customerName = "Ananya Sharma",
+            customerName = "Ananya S.",
             rating = 5,
-            comment = "Delivered to Bengaluru in flawless condition! Packed with immense care using eco-friendly materials. It has been in my bedroom for 3 weeks and looks stunning in the fluted pot.",
+            comment = "Delivered to Thane in flawless condition! Packed with immense care using eco-friendly materials. It has been in my bedroom for 3 weeks and looks stunning in the fluted pot.",
             dateText = "Aug 20, 2026",
             plantSetupPhoto = "setup_bedroom_1",
             isApproved = true,
@@ -858,9 +817,9 @@ object SeedData {
         Review(
             id = 2,
             productId = 2,
-            customerName = "Rahul Verma",
+            customerName = "Rahul V.",
             rating = 5,
-            comment = "Grows so quickly! It is already cascading beautifully over my study shelf in Pune. The beginner care guide gave me complete confidence.",
+            comment = "Grows so quickly! It is already cascading beautifully over my study shelf here in Thane. The beginner care guide gave me complete confidence.",
             dateText = "Aug 18, 2026",
             plantSetupPhoto = "setup_kitchen_1",
             isApproved = true,
@@ -869,9 +828,9 @@ object SeedData {
         Review(
             id = 3,
             productId = 11,
-            customerName = "Priya Iyer",
+            customerName = "Priya I.",
             rating = 5,
-            comment = "The self-watering pot saved my plants while I was traveling away from Mumbai for 10 days. Came back to healthy, vibrant green leaves!",
+            comment = "The self-watering pot saved my plants while I was traveling away from Thane for 10 days. Came back to healthy, vibrant green leaves!",
             dateText = "Aug 15, 2026",
             plantSetupPhoto = null,
             isApproved = true,
@@ -880,7 +839,7 @@ object SeedData {
         Review(
             id = 4,
             productId = 6,
-            customerName = "Rohan Mehta",
+            customerName = "Rohan M.",
             rating = 5,
             comment = "Truly thrives in my home office corner. Glossy, dark green and requires almost zero effort. Highly recommended!",
             dateText = "Aug 12, 2026",

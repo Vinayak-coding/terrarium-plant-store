@@ -57,7 +57,7 @@ import com.example.ui.theme.TerracottaAccent
 import com.example.ui.viewmodel.TerrariumViewModel
 
 fun getSpaceAdvice(space: SpaceCategory): String = when (space) {
-    SpaceCategory.BEDROOM -> "Choose NASA air-purifying varieties like Snake Plants that release fresh oxygen at night and thrive in gentle ambient lighting."
+    SpaceCategory.BEDROOM -> "Choose low-light and easy-to-maintain varieties like Snake Plants that release fresh oxygen at night and thrive in gentle ambient lighting."
     SpaceCategory.LIVING_ROOM -> "Ideal for statement architectural plants like Fiddle Leaf Fig and cascading Golden Pothos that enjoy medium bright indirect light."
     SpaceCategory.BALCONY -> "Great for sun-loving plants, edible herb kits and hardy succulents that love fresh outdoor air circulation and morning direct sunlight."
     SpaceCategory.OFFICE -> "Compact, drought-tolerant plants like ZZ Plants, Succulents, and self-watering pots that maintain a stress-free green work environment."

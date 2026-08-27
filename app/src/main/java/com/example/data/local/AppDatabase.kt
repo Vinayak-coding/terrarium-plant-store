@@ -77,7 +77,7 @@ abstract class AppDatabase : RoomDatabase() {
                 productDao.insertProducts(SeedData.initialProducts)
             }
             val reminderDao = database.reminderDao()
-            if (reminderDao.getReminderCount() == 0) {
+            if (SeedData.initialReminders.isNotEmpty() && reminderDao.getReminderCount() == 0) {
                 reminderDao.insertReminders(SeedData.initialReminders)
             }
             val reviewDao = database.reviewDao()

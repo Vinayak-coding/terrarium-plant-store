@@ -133,7 +133,7 @@ fun CustomerDashboardScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Urban Green Club Member",
+                            text = user.membershipTier,
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = TerracottaAccent

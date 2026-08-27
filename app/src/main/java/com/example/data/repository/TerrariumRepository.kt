@@ -272,10 +272,10 @@ class TerrariumRepository(private val database: AppDatabase) {
             if (answers.purpose.isNotBlank()) {
                 if (answers.purpose.contains("Air", ignoreCase = true) && plant.benefits.contains("Air", ignoreCase = true)) {
                     score += 10
-                    reasons.add("High NASA air-purification rating")
+                    reasons.add("Popular indoor air-freshening foliage")
                 } else if (answers.purpose.contains("Pet", ignoreCase = true) && plant.isPetFriendly) {
                     score += 15
-                    reasons.add("100% Non-toxic & Pet Safe")
+                    reasons.add("Pet friendly variety")
                 } else if (answers.purpose.contains("Herb", ignoreCase = true) && plant.category == ProductCategory.HERBS) {
                     score += 15
                     reasons.add("Aromatic culinary harvest")

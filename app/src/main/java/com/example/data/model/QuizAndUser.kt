@@ -87,18 +87,19 @@ data class QuizRecommendationResult(
 )
 
 data class UserAccount(
-    val name: String = "Aarav Sharma",
-    val email: String = "aarav.sharma@terrarium.in",
-    val phone: String = "+91 98765 43210",
-    val flatHouse: String = "Flat 402, Green Meadows",
-    val street: String = "Senapati Bapat Road",
-    val locality: String = "Shivajinagar",
-    val landmark: String = "Near ICC Trade Tower",
-    val city: String = "Pune",
+    val name: String = "New Customer",
+    val email: String = "customer@example.com",
+    val phone: String = "+91 98200 12345",
+    val flatHouse: String = "Flat 402, Nilgiri Heights",
+    val street: String = "Pokhran Road No. 2",
+    val locality: String = "Vartak Nagar",
+    val landmark: String = "Near Upvan Lake",
+    val city: String = "Thane",
     val state: String = "Maharashtra",
-    val pinCode: String = "411016",
+    val pinCode: String = "400606",
     val isGuest: Boolean = false,
-    val isAdmin: Boolean = false
+    val isAdmin: Boolean = false,
+    val membershipTier: String = "New Plant Parent"
 ) {
     val defaultAddress: String
         get() = "$flatHouse, $street, $locality, $city, $state - $pinCode"
@@ -107,4 +108,13 @@ data class UserAccount(
     val postalCode: String
         get() = pinCode
 }
+
+data class AdminProfile(
+    val name: String = "Store Admin",
+    val role: String = "Store Administrator",
+    val storeLocation: String = "Thane, Maharashtra",
+    val storeName: String = "[Store Name]",
+    val storeAddress: String = "[Store Address, Thane, Maharashtra]",
+    val isDemoAdmin: Boolean = true
+)
 

@@ -46,5 +46,36 @@ class ExampleRobolectricTest {
     fun `test nav destination care route`() {
         assertEquals("care", com.example.ui.components.NavDestination.CARE.route)
     }
+
+    @Test
+    fun `test neutral first-time customer profile`() {
+        val user = UserAccount()
+        assertEquals("New Customer", user.name)
+        assertEquals("customer@example.com", user.email)
+        assertEquals("New Plant Parent", user.membershipTier)
+        assertEquals("Thane", user.city)
+        assertEquals("Maharashtra", user.state)
+        assertEquals("400606", user.pinCode)
+    }
+
+    @Test
+    fun `test admin profile separation`() {
+        val admin = com.example.data.model.AdminProfile()
+        assertEquals("Store Admin", admin.name)
+        assertEquals("Thane, Maharashtra", admin.storeLocation)
+        assertEquals("[Store Name]", admin.storeName)
+    }
+
+    @Test
+    fun `test store pickup delivery option`() {
+        val pickup = DeliveryOption.STORE_PICKUP
+        assertTrue(pickup.displayName.contains("Thane"))
+        assertEquals(0.0, pickup.fee, 0.01)
+    }
+
+    @Test
+    fun `test initial care reminders is empty for first-time user`() {
+        assertTrue(SeedData.initialReminders.isEmpty())
+    }
 }
 

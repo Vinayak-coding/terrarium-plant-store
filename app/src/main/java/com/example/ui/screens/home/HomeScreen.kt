@@ -26,9 +26,11 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Eco
 import androidx.compose.material.icons.filled.LocalOffer
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Spa
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -182,54 +184,94 @@ fun HomeScreen(
             }
         }
 
-        // 2. Promotional Discount Banner
-        Box(
+        // 2. Promotional Discount & Store Pickup Banner
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(
-                    Brush.linearGradient(
-                        listOf(TerracottaLight, Color(0xFFFFF3E0))
-                    )
-                )
-                .padding(14.dp)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        Brush.linearGradient(
+                            listOf(TerracottaLight, Color(0xFFFFF3E0))
+                        )
+                    )
+                    .padding(14.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f)
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(38.dp)
-                            .clip(CircleShape)
-                            .background(TerracottaAccent),
-                        contentAlignment = Alignment.Center
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.LocalOffer,
-                            contentDescription = null,
-                            tint = Color.White,
-                            modifier = Modifier.size(20.dp)
-                        )
+                        Box(
+                            modifier = Modifier
+                                .size(38.dp)
+                                .clip(CircleShape)
+                                .background(TerracottaAccent),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.LocalOffer,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text(
+                                text = "Monsoon & Festive Green Sale",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = TerracottaDark
+                            )
+                            Text(
+                                text = "Use coupon GROW20 for 20% off all plants & kits",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = ForestGreenDark
+                            )
+                        }
                     }
-                    Spacer(modifier = Modifier.width(12.dp))
+                }
+            }
+
+            // Thane Store Partner & Pickup Badge
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(SoftSageContainer)
+                    .padding(horizontal = 14.dp, vertical = 10.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Storefront,
+                        contentDescription = null,
+                        tint = ForestGreenDark,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            text = "Monsoon & Festive Green Sale",
-                            style = MaterialTheme.typography.titleMedium,
+                            text = "Store Pickup – Thane",
+                            style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
-                            color = TerracottaDark
+                            color = ForestGreenDark
                         )
                         Text(
-                            text = "Use coupon GROW20 for 20% off all plants & kits",
+                            text = "Pickup from our Thane store or enjoy safe delivery across Maharashtra",
                             style = MaterialTheme.typography.bodySmall,
-                            color = ForestGreenDark
+                            color = ForestGreenPrimary
                         )
                     }
                 }
@@ -519,7 +561,7 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "— Ananya Sharma, Bengaluru (Verified Customer)",
+                        text = "— Verified Customer, Thane",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = ForestGreenPrimary
