@@ -42,7 +42,7 @@ enum class NavDestination(
     HOME("home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
     CATALOGUE("catalogue", "Shop", Icons.Filled.LocalFlorist, Icons.Outlined.LocalFlorist),
     QUIZ("quiz", "Plant Match", Icons.Filled.AutoAwesome, Icons.Outlined.AutoAwesome),
-    GUIDES("guides", "Care", Icons.Filled.MenuBook, Icons.Outlined.MenuBook),
+    CARE("care", "Care", Icons.Filled.MenuBook, Icons.Outlined.MenuBook),
     DASHBOARD("dashboard", "Account", Icons.Filled.AccountCircle, Icons.Outlined.AccountCircle)
 }
 

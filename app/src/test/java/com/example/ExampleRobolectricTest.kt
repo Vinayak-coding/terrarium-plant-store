@@ -43,13 +43,8 @@ class ExampleRobolectricTest {
     }
 
     @Test
-    fun `test delivery threshold logic`() {
-        val subtotalFree = 1200.0
-        val subtotalCharged = 450.0
-        val isFreeDelivery = subtotalFree >= 999.0
-        val isCharged = subtotalCharged < 999.0
-        assertTrue(isFreeDelivery)
-        assertTrue(isCharged)
+    fun `test nav destination care route`() {
+        assertEquals("care", com.example.ui.components.NavDestination.CARE.route)
     }
 }
 
