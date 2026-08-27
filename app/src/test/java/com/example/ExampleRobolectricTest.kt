@@ -53,23 +53,26 @@ class ExampleRobolectricTest {
         assertEquals("New Customer", user.name)
         assertEquals("customer@example.com", user.email)
         assertEquals("New Plant Parent", user.membershipTier)
-        assertEquals("Thane", user.city)
+        assertEquals("Diva East", user.city)
         assertEquals("Maharashtra", user.state)
-        assertEquals("400606", user.pinCode)
+        assertEquals("400612", user.pinCode)
     }
 
     @Test
     fun `test admin profile separation`() {
         val admin = com.example.data.model.AdminProfile()
         assertEquals("Store Admin", admin.name)
-        assertEquals("Thane, Maharashtra", admin.storeLocation)
-        assertEquals("[Store Name]", admin.storeName)
+        assertEquals("Store Administrator", admin.role)
+        assertEquals("Mumbra Colony, Ganesh Nagar, Diva East, Maharashtra", admin.storeLocation)
+        assertEquals("Terrarium", admin.storeName)
+        assertTrue(admin.formattedAddress.contains("Mumbra Colony, Ganesh Nagar"))
+        assertTrue(admin.formattedAddress.contains("Diva East, Maharashtra, India"))
     }
 
     @Test
     fun `test store pickup delivery option`() {
         val pickup = DeliveryOption.STORE_PICKUP
-        assertTrue(pickup.displayName.contains("Thane"))
+        assertTrue(pickup.displayName.contains("Diva East"))
         assertEquals(0.0, pickup.fee, 0.01)
     }
 

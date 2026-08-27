@@ -15,7 +15,7 @@ enum class OrderStatus(val displayName: String, val stepIndex: Int) {
 enum class DeliveryOption(val displayName: String, val fee: Double, val estimatedTime: String) {
     STANDARD_DELIVERY("Standard Delivery", 99.0, "3-5 Business Days"),
     EXPRESS_DELIVERY("Express Delivery", 199.0, "1-2 Business Days"),
-    STORE_PICKUP("Store Pickup – Thane (Pickup from our Thane store)", 0.0, "Ready in 2 Hours")
+    STORE_PICKUP("Store Pickup – Diva East (Pickup from our Diva East store)", 0.0, "Ready in 2 Hours")
 }
 
 enum class PaymentMethod(val displayName: String) {

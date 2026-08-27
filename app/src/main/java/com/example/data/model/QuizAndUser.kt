@@ -90,13 +90,13 @@ data class UserAccount(
     val name: String = "New Customer",
     val email: String = "customer@example.com",
     val phone: String = "+91 98200 12345",
-    val flatHouse: String = "Flat 402, Nilgiri Heights",
-    val street: String = "Pokhran Road No. 2",
-    val locality: String = "Vartak Nagar",
-    val landmark: String = "Near Upvan Lake",
-    val city: String = "Thane",
+    val flatHouse: String = "Flat 101, Green Meadows",
+    val street: String = "Station Road",
+    val locality: String = "Ganesh Nagar",
+    val landmark: String = "Near Mumbra Colony",
+    val city: String = "Diva East",
     val state: String = "Maharashtra",
-    val pinCode: String = "400606",
+    val pinCode: String = "400612",
     val isGuest: Boolean = false,
     val isAdmin: Boolean = false,
     val membershipTier: String = "New Plant Parent"
@@ -112,9 +112,15 @@ data class UserAccount(
 data class AdminProfile(
     val name: String = "Store Admin",
     val role: String = "Store Administrator",
-    val storeLocation: String = "Thane, Maharashtra",
-    val storeName: String = "[Store Name]",
-    val storeAddress: String = "[Store Address, Thane, Maharashtra]",
+    val storeName: String = "Terrarium",
+    val area: String = "Mumbra Colony",
+    val locality: String = "Ganesh Nagar",
+    val cityArea: String = "Diva East",
+    val state: String = "Maharashtra",
+    val country: String = "India",
+    val storeLocation: String = "Mumbra Colony, Ganesh Nagar, Diva East, Maharashtra",
+    val formattedAddress: String = "Terrarium\nMumbra Colony, Ganesh Nagar\nDiva East, Maharashtra, India",
+    val pinCodePlaceholder: String = "[PIN Code]",
     val isDemoAdmin: Boolean = true
 )
 

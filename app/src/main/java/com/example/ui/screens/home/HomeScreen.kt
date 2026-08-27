@@ -243,7 +243,7 @@ fun HomeScreen(
                 }
             }
 
-            // Thane Store Partner & Pickup Badge
+            // Diva East Store Partner & Pickup Badge
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -263,13 +263,13 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(
-                            text = "Store Pickup – Thane",
+                            text = "Store Pickup – Diva East",
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
                             color = ForestGreenDark
                         )
                         Text(
-                            text = "Pickup from our Thane store or enjoy safe delivery across Maharashtra",
+                            text = "Pickup from our Diva East store (Mumbra Colony, Ganesh Nagar) or enjoy safe delivery across Maharashtra",
                             style = MaterialTheme.typography.bodySmall,
                             color = ForestGreenPrimary
                         )
@@ -561,7 +561,7 @@ fun HomeScreen(
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "— Verified Customer, Thane",
+                        text = "— Verified Customer, Maharashtra",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = ForestGreenPrimary

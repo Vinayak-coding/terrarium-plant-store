@@ -602,8 +602,8 @@ fun CartAndCheckoutScreen(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Column {
-                                Text("Terrarium Experience Nursery Pickup (FREE)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
-                                Text("Ready in 2 hours at Terrarium Greenhouse Studios", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("Store Pickup – Diva East (FREE)", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium, color = DeepNeem)
+                                Text("Pickup from our Diva East store (Mumbra Colony, Ganesh Nagar)", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
 
