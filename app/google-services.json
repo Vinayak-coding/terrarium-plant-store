@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376890268543",
+    "project_id": "terrarium-plant-store",
+    "storage_bucket": "terrarium-plant-store.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376890268543:android:29a506dc50f56d5b4d184a",
+        "android_client_info": {
+          "package_name": "com.aistudio.terrarium.kgnxvw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs8eBF1I0Zs49wCX9rbR72XkxvmAx3Ero"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
